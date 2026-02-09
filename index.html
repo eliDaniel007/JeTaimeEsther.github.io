@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour Esther ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Sacramento&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe4e6 100%);
+            margin: 0;
+            padding: 0;
+        }
+        .cursive {
+            font-family: 'Sacramento', cursive;
+        }
+        .fredoka {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .runaway-btn {
+            transition: top 0.3s ease-out, left 0.3s ease-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .heart-float {
+            animation: heartFloat 3s ease-in-out infinite;
+        }
+        @keyframes heartFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #f43f5e, #ec4899);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // ========================================
+        // PERSONNALISE ICI TES CONTENUS
+        // ========================================
+        
+        const whyILoveYou = [
+            { id: 1, text: "Ton sourire illumine mes journées les plus sombres" },
+            { id: 2, text: "Ta gentillesse envers tout le monde me touche profondément" },
+            { id: 3, text: "Ta force et ton courage m'inspirent chaque jour" },
+            { id: 4, text: "Ton humour me fait rire même dans les moments difficiles" },
+            { id: 5, text: "Ta présence me rend meilleur" },
+            { id: 6, text: "Ton amour inconditionnel me fait sentir aimé" },
+            { id: 7, text: "Ta façon de voir la beauté dans les petites choses" },
+            { id: 8, text: "Ton soutien dans tous mes projets" }
+        ];
+
+        const whatYouDoForMe = [
+            { 
+                title: "Tu me soutiens",
+                text: "Dans mes moments de doute, tu es toujours là pour me rappeler ma valeur. Merci d'être mon pilier.",
+                emoji: "🤗"
+            },
+            { 
+                title: "Tu me fais rire",
+                text: "Même dans les jours les plus difficiles, tu trouves toujours un moyen de me faire sourire.",
+                emoji: "😂"
+            },
+            { 
+                title: "Tu m'inspires",
+                text: "Ta passion et ta détermination me poussent à devenir une meilleure version de moi-même.",
+                emoji: "✨"
+            },
+            { 
+                title: "Tu m'écoutes",
+                text: "Merci de prendre le temps d'écouter vraiment, sans jugement, juste avec ton cœur.",
+                emoji: "👂"
+            }
+        ];
+
+        const ourMoments = [
+            {
+                id: 1,
+                title: "Toi, ma belle Esther",
+                date: "Toujours radieuse",
+                text: "Ce sourire qui illumine mes journées. Tu es magnifique, à l'intérieur comme à l'extérieur.",
+                img: "photo1.jpeg"
+            },
+            {
+                id: 2,
+                title: "Nous deux",
+                date: "Inséparables",
+                text: "Main dans la main, face au monde. Ensemble, nous sommes plus forts. C'est toi et moi contre tout.",
+                img: "photo3.jpeg"
+            },
+            {
+                id: 3,
+                title: "Nos moments avec les amis",
+                date: "Les bons souvenirs",
+                text: "Ces moments partagés avec ceux qu'on aime. Tu rends chaque instant spécial, même en groupe.",
+                img: "photo4.jpeg"
+            },
+            {
+                id: 4,
+                title: "Mon amour pour toi",
+                date: "Chaque jour qui passe",
+                text: "Chaque jour, je tombe encore plus amoureux de toi. Tu es ma personne, mon tout.",
+                img: "photo2.jpeg"
+            }
+        ];
+
+        const ourAnecdotes = [
+            {
+                id: 1,
+                title: "Le jour où...",
+                story: "Tu as essayé de me surprendre mais tu as raté ta cachette 😂. On a ri pendant des heures de cette histoire !",
+                reaction: "😂❤️"
+            },
+            {
+                id: 2,
+                title: "Notre première dispute",
+                story: "On était tellement mauvais pour se disputer qu'on a fini par rire. C'est là que j'ai su qu'on était faits l'un pour l'autre.",
+                reaction: "🥰"
+            },
+            {
+                id: 3,
+                title: "Quand tu m'as dit 'Je t'aime'",
+                story: "Mon cœur s'est arrêté. C'était le plus beau moment de ma vie. Je me souviens de chaque détail.",
+                reaction: "💕"
+            }
+        ];
+
+        function App() {
+            const [currentSection, setCurrentSection] = useState(0);
+            const [currentMoment, setCurrentMoment] = useState(0);
+            
+            // Pour la section finale
+            const [yesPressed, setYesPressed] = useState(false);
+            const [position, setPosition] = useState({ top: "50%", left: "50%" });
+            const [isMoving, setIsMoving] = useState(false);
+
+            const totalSections = 7; // Intro + 5 sections + Final
+
+            const nextSection = () => {
+                if (currentSection < totalSections - 1) {
+                    setCurrentSection(currentSection + 1);
+                }
+            };
+
+            const prevSection = () => {
+                if (currentSection > 0) {
+                    setCurrentSection(currentSection - 1);
+                }
+            };
+
+            const nextMoment = () => {
+                if (currentMoment < ourMoments.length - 1) {
+                    setCurrentMoment(currentMoment + 1);
+                } else {
+                    nextSection();
+                }
+            };
+
+            const prevMoment = () => {
+                if (currentMoment > 0) {
+                    setCurrentMoment(currentMoment - 1);
+                }
+            };
+
+            // Fonction pour le bouton fuyant - VERSION CORRIGÉE
+            const moveButton = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const winWidth = window.innerWidth;
+                const winHeight = window.innerHeight;
+                
+                // Taille du bouton (estimation large)
+                const btnWidth = 150;
+                const btnHeight = 60;
+                
+                // Marges de sécurité
+                const margin = 20;
+                
+                // Calcul de la zone sûre
+                const minX = margin;
+                const maxX = winWidth - btnWidth - margin;
+                const minY = margin;
+                const maxY = winHeight - btnHeight - margin;
+                
+                // Position aléatoire dans la zone sûre
+                const randomX = minX + Math.random() * (maxX - minX);
+                const randomY = minY + Math.random() * (maxY - minY);
+                
+                setIsMoving(true);
+                setPosition({ 
+                    top: `${randomY}px`, 
+                    left: `${randomX}px` 
+                });
+            };
+
+            // Barre de progression
+            const progress = ((currentSection + 1) / totalSections) * 100;
+
+            // ==========================================
+            // SECTION 0 - INTRODUCTION
+            // ==========================================
+            if (currentSection === 0) {
+                return (
+                    <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 fade-in relative overflow-hidden">
+                        {/* Cœurs flottants en arrière-plan */}
+                        <div className="absolute top-10 left-10 text-6xl opacity-20 heart-float">❤️</div>
+                        <div className="absolute bottom-20 right-20 text-5xl opacity-20 heart-float" style={{animationDelay: '1s'}}>💕</div>
+                        <div className="absolute top-1/3 right-10 text-4xl opacity-20 heart-float" style={{animationDelay: '2s'}}>💖</div>
+                        
+                        <div className="text-center z-10 max-w-2xl">
+                            <h1 className="cursive text-7xl text-rose-600 mb-6 drop-shadow-lg">Ma chère Esther</h1>
+                            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl">
+                                <p className="text-xl text-gray-700 leading-relaxed mb-6">
+                                    Aujourd'hui, ça fait <span className="font-bold text-rose-600 text-2xl">2 ans</span> que tu es entrée dans ma vie.
+                                </p>
+                                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                                    Deux années remplies de bonheur, de complicité, de rires et d'amour.
+                                    J'ai créé ce petit site pour te montrer à quel point tu comptes pour moi.
+                                </p>
+                                <p className="text-lg text-gray-600 italic mb-8">
+                                    Prends ton temps pour découvrir tout ce que j'ai préparé pour toi... 💕
+                                </p>
+                                <button 
+                                    onClick={nextSection}
+                                    className="fredoka bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-4 px-10 rounded-full shadow-xl transition transform hover:scale-105 text-lg"
+                                >
+                                    Découvrir ✨
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ==========================================
+            // SECTION 1 - POURQUOI JE T'AIME
+            // ==========================================
+            if (currentSection === 1) {
+                return (
+                    <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 py-12 fade-in">
+                        <div className="w-full max-w-4xl">
+                            <div className="progress-bar mb-8" style={{width: `${progress}%`}}></div>
+                            
+                            <h2 className="cursive text-6xl text-rose-600 text-center mb-4">Pourquoi je t'aime</h2>
+                            <p className="text-center text-gray-600 mb-12 text-lg">Il y a tellement de raisons...</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                                {whyILoveYou.map((reason, index) => (
+                                    <div 
+                                        key={reason.id} 
+                                        className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition slide-in"
+                                        style={{animationDelay: `${index * 0.1}s`}}
+                                    >
+                                        <div className="flex items-start gap-4">
+                                            <div className="text-3xl">❤️</div>
+                                            <p className="text-gray-700 leading-relaxed">{reason.text}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                                <button 
+                                    onClick={prevSection}
+                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-full transition"
+                                >
+                                    ← Retour
+                                </button>
+                                <button 
+                                    onClick={nextSection}
+                                    className="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition"
+                                >
+                                    Suivant →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ==========================================
+            // SECTION 2 - CE QUE TU FAIS POUR MOI
+            // ==========================================
+            if (currentSection === 2) {
+                return (
+                    <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 py-12 fade-in">
+                        <div className="w-full max-w-4xl">
+                            <div className="progress-bar mb-8" style={{width: `${progress}%`}}></div>
+                            
+                            <h2 className="cursive text-6xl text-rose-600 text-center mb-4">Merci pour tout</h2>
+                            <p className="text-center text-gray-600 mb-12 text-lg">Ce que tu fais pour moi chaque jour...</p>
+                            
+                            <div className="space-y-6 mb-12">
+                                {whatYouDoForMe.map((item, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition slide-in"
+                                        style={{animationDelay: `${index * 0.15}s`}}
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <span className="text-5xl">{item.emoji}</span>
+                                            <h3 className="text-2xl font-bold text-rose-600">{item.title}</h3>
+                                        </div>
+                                        <p className="text-gray-700 text-lg leading-relaxed pl-16">{item.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                                <button 
+                                    onClick={prevSection}
+                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-full transition"
+                                >
+                                    ← Retour
+                                </button>
+                                <button 
+                                    onClick={nextSection}
+                                    className="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition"
+                                >
+                                    Suivant →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ==========================================
+            // SECTION 3 - NOS MOMENTS ENSEMBLE
+            // ==========================================
+            if (currentSection === 3) {
+                const moment = ourMoments[currentMoment];
+                return (
+                    <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 py-12 fade-in">
+                        <div className="w-full max-w-3xl">
+                            <div className="progress-bar mb-8" style={{width: `${progress}%`}}></div>
+                            
+                            <h2 className="cursive text-6xl text-rose-600 text-center mb-12">Nos moments magiques</h2>
+                            
+                            <div className="bg-white p-8 rounded-3xl shadow-2xl">
+                                <div className="w-full h-80 bg-gradient-to-br from-rose-100 to-pink-100 rounded-2xl mb-6 overflow-hidden flex items-center justify-center">
+                                    <img src={moment.img} alt={moment.title} className="object-cover h-full w-full" style={{objectPosition: 'center'}} />
+                                </div>
+                                
+                                <div className="text-center mb-6">
+                                    <span className="inline-block bg-rose-100 text-rose-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                                        {moment.date}
+                                    </span>
+                                    <h3 className="text-3xl font-bold text-gray-800 mb-4">{moment.title}</h3>
+                                    <p className="text-gray-600 text-lg leading-relaxed italic">"{moment.text}"</p>
+                                </div>
+                                
+                                <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+                                    <button 
+                                        onClick={prevMoment}
+                                        disabled={currentMoment === 0}
+                                        className={`font-bold py-2 px-6 rounded-full transition ${
+                                            currentMoment === 0 
+                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                                            : 'bg-gray-300 hover:bg-gray-400 text-gray-700'
+                                        }`}
+                                    >
+                                        ← Précédent
+                                    </button>
+                                    
+                                    <span className="text-gray-400 text-sm">
+                                        {currentMoment + 1} / {ourMoments.length}
+                                    </span>
+                                    
+                                    <button 
+                                        onClick={nextMoment}
+                                        className="bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition"
+                                    >
+                                        {currentMoment === ourMoments.length - 1 ? "Suivant →" : "Suivant →"}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div className="mt-6">
+                                <button 
+                                    onClick={prevSection}
+                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-full transition"
+                                >
+                                    ← Retour à la section précédente
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ==========================================
+            // SECTION 4 - NOS ANECDOTES
+            // ==========================================
+            if (currentSection === 4) {
+                return (
+                    <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 py-12 fade-in">
+                        <div className="w-full max-w-4xl">
+                            <div className="progress-bar mb-8" style={{width: `${progress}%`}}></div>
+                            
+                            <h2 className="cursive text-6xl text-rose-600 text-center mb-4">Nos petites histoires</h2>
+                            <p className="text-center text-gray-600 mb-12 text-lg">Ces moments qui nous appartiennent...</p>
+                            
+                            <div className="space-y-6 mb-12">
+                                {ourAnecdotes.map((anecdote, index) => (
+                                    <div 
+                                        key={anecdote.id} 
+                                        className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition slide-in relative overflow-hidden"
+                                        style={{animationDelay: `${index * 0.2}s`}}
+                                    >
+                                        <div className="absolute top-4 right-4 text-5xl opacity-20">{anecdote.reaction}</div>
+                                        <h3 className="text-2xl font-bold text-rose-600 mb-4">{anecdote.title}</h3>
+                                        <p className="text-gray-700 text-lg leading-relaxed">{anecdote.story}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                                <button 
+                                    onClick={prevSection}
+                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-full transition"
+                                >
+                                    ← Retour
+                                </button>
+                                <button 
+                                    onClick={nextSection}
+                                    className="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition"
+                                >
+                                    Suivant →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ==========================================
+            // SECTION 5 - MESSAGE PERSONNEL
+            // ==========================================
+            if (currentSection === 5) {
+                return (
+                    <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 py-12 fade-in">
+                        <div className="w-full max-w-3xl">
+                            <div className="progress-bar mb-8" style={{width: `${progress}%`}}></div>
+                            
+                            <div className="bg-white/90 backdrop-blur p-12 rounded-3xl shadow-2xl text-center">
+                                <div className="text-6xl mb-6">💌</div>
+                                <h2 className="cursive text-5xl text-rose-600 mb-8">Un message pour toi</h2>
+                                
+                                <div className="text-left space-y-6 text-gray-700 text-lg leading-relaxed max-w-2xl mx-auto">
+                                    <p className="italic">
+                                        Ma douce Esther,
+                                    </p>
+                                    <p>
+                                        Ces 2 années à tes côtés ont été les plus belles de ma vie. 
+                                        Tu as transformé mon monde de manière que je n'aurais jamais imaginée.
+                                    </p>
+                                    <p>
+                                        Chaque jour avec toi est un cadeau. Ton rire est ma mélodie préférée, 
+                                        ton sourire est ma lumière, et ton amour est ma force.
+                                    </p>
+                                    <p>
+                                        Tu me rends meilleur. Tu me pousses à grandir, à rêver plus grand, 
+                                        à croire en moi. Et surtout, tu m'aimes pour qui je suis vraiment.
+                                    </p>
+                                    <p>
+                                        Je veux passer le reste de ma vie à te rendre heureuse, 
+                                        à te faire rire, à être ton soutien comme tu es le mien.
+                                    </p>
+                                    <p className="font-semibold text-rose-600 text-xl text-center pt-6">
+                                        Je t'aime plus que les mots ne peuvent le dire. ❤️
+                                    </p>
+                                    <p className="text-right italic text-gray-500">
+                                        Ton [Ton prénom]
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between items-center mt-8">
+                                <button 
+                                    onClick={prevSection}
+                                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-6 rounded-full transition"
+                                >
+                                    ← Retour
+                                </button>
+                                <button 
+                                    onClick={nextSection}
+                                    className="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-4 px-10 rounded-full shadow-xl transition transform hover:scale-105"
+                                >
+                                    Une dernière chose... →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ==========================================
+            // SECTION 6 - LA QUESTION FINALE
+            // ==========================================
+            return (
+                <div className="min-h-screen w-screen flex flex-col items-center justify-center px-6 fade-in relative">
+                    <div className="progress-bar fixed top-0 left-0 right-0 z-50" style={{width: `${progress}%`}}></div>
+                    
+                    {yesPressed ? (
+                        /* Écran de succès */
+                        <div className="text-center max-w-2xl">
+                            <img 
+                                src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" 
+                                alt="Bisous ours" 
+                                className="h-72 mx-auto rounded-3xl shadow-2xl border-4 border-white mb-8"
+                            />
+                            <h1 className="cursive text-7xl text-rose-600 drop-shadow-lg mb-6 heart-float">
+                                Je t'aime à la folie ! 
+                            </h1>
+                            <p className="text-2xl text-gray-700 leading-relaxed mb-4">
+                                Merci pour ces 2 merveilleuses années.
+                            </p>
+                            <p className="text-xl text-gray-600">
+                                Et vivement toutes les prochaines ! 🥂✨
+                            </p>
+                            <div className="mt-12 text-6xl">
+                                ❤️💕💖💗💓
+                            </div>
+                        </div>
+                    ) : (
+                        /* Écran de la question */
+                        <div className="text-center w-full max-w-3xl relative">
+                            <img 
+                                src="https://media.tenor.com/kRyTCwH8s4sAAAAi/bear-love.gif" 
+                                alt="Ours mignon" 
+                                className="h-56 mx-auto mb-8 rounded-2xl"
+                            />
+                            
+                            <h1 className="text-4xl md:text-5xl font-bold text-rose-600 mb-6 leading-tight fredoka">
+                                Après tout ça...
+                            </h1>
+                            <p className="text-2xl text-gray-700 mb-12 leading-relaxed">
+                                Esther, veux-tu continuer cette magnifique aventure avec moi pour encore longtemps ?
+                            </p>
+
+                            <div className="flex flex-row items-center justify-center gap-8 relative min-h-[100px]">
+                                {/* Bouton OUI */}
+                                <button
+                                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-10 rounded-full text-2xl shadow-2xl transform transition hover:scale-110 z-10 fredoka"
+                                    onClick={() => setYesPressed(true)}
+                                >
+                                    OUI ! ❤️
+                                </button>
+
+                                {/* Bouton NON (Impossible à cliquer) */}
+                                <button
+                                    className="bg-red-400 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-full text-2xl shadow-2xl runaway-btn fredoka whitespace-nowrap"
+                                    style={
+                                        isMoving 
+                                        ? { position: 'fixed', top: position.top, left: position.left, transform: 'translate(-50%, -50%)' } 
+                                        : { position: 'relative' }
+                                    }
+                                    onMouseEnter={moveButton}
+                                    onClick={moveButton}
+                                    onTouchStart={moveButton}
+                                >
+                                    Non 😢
+                                </button>
+                            </div>
+
+                            <p className="text-gray-400 text-sm mt-12 italic">
+                                (Psst... il n'y a qu'une seule bonne réponse 😉)
+                            </p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
